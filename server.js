@@ -1,3 +1,4 @@
+const tokenStorageService = require('./services/tokenStorageService');
 const express = require('express');
 const cors = require('cors');
 const env = require('./config/env');
@@ -59,7 +60,36 @@ app.use(
     }
   })
 );
+// Shopify App Entry Point
+app.get('/', (req, res) => {
+  const shop = req.query.shop;
 
+  if (!shop) {
+    return res.status(200).send(
+      'Custom Product Designer Backend is running.'
+    );
+  }
+
+  // Check if shop has already installed the app
+  if (tokenStorageService.hasToken(shop)) {
+    return res.status(200).send(`
+      <html>
+        <body style="font-family:Arial;text-align:center;padding:50px">
+          <h2>Custom Product Designer Connected!</h2>
+          <p>Your Shopify store is successfully connected.</p>
+          <a href="https://${shop}/admin/apps">
+            Go to Shopify Admin
+          </a>
+        </body>
+      </html>
+    `);
+  }
+
+  // Start OAuth installation
+  return res.redirect(
+    `/auth?shop=${encodeURIComponent(shop)}`
+  );
+});
 // Mount Health check
 app.use('/', healthRoutes);
 
