@@ -18,7 +18,7 @@ services:
       - key: PORT
         value: 10000
       - key: SHOPIFY_API_VERSION
-        value: "2025-01"
+        value: "2026-10"
       - key: SHOPIFY_API_KEY
         sync: false
       - key: SHOPIFY_API_SECRET

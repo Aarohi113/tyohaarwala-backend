@@ -35,6 +35,16 @@ describe('Shopify Authentication & OAuth Security Tests', () => {
       expect(res.headers.location).toContain(`client_id=${env.SHOPIFY_API_KEY}`);
       expect(res.headers.location).toContain('state=');
       expect(res.headers.location).toContain('scope=');
+
+      // Verify exact required scopes
+      const url = new URL(res.headers.location);
+      const scopes = url.searchParams.get('scope').split(',');
+      expect(scopes).toContain('write_app_proxy');
+      expect(scopes).toContain('write_files');
+      expect(scopes).toContain('read_files');
+      expect(scopes).toContain('read_products');
+      expect(scopes).toContain('read_orders');
+      expect(scopes).not.toContain('write_orders');
     });
   });
 

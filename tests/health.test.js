@@ -8,6 +8,7 @@ describe('Health Endpoint Tests', () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('status', 'ok');
     expect(res.body).toHaveProperty('apiVersion');
+    expect(res.body.apiVersion).toBe('2026-10');
     expect(res.body).toHaveProperty('environment');
     expect(res.body).toHaveProperty('uptimeSeconds');
     expect(res.body).toHaveProperty('timestamp');

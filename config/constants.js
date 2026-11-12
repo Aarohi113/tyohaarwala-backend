@@ -3,15 +3,15 @@
  */
 module.exports = {
   // Shopify API Version (quarterly release cadence)
-  DEFAULT_SHOPIFY_API_VERSION: '2025-01',
+  DEFAULT_SHOPIFY_API_VERSION: '2026-10',
 
   // Required Shopify OAuth Scopes
   REQUIRED_SCOPES: [
+    'write_app_proxy',
     'write_files',
     'read_files',
     'read_products',
-    'read_orders',
-    'write_orders'
+    'read_orders'
   ],
 
   // Upload validation limits

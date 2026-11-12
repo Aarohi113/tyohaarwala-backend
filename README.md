@@ -2,7 +2,7 @@
 
 A secure, production-grade Node.js/Express backend architected for the **Custom Product Designer** Shopify customizer on the **Horizon** theme.
 
-This backend interfaces with **Shopify Admin GraphQL API (2025-01)**, **Shopify Files API**, **Shopify App Proxy**, and **Shopify Webhooks**. It validates and persists high-resolution Konva.js canvas exports into the merchant's Shopify Files CDN and attaches design references to Shopify cart items and orders without requiring external databases.
+This backend interfaces with **Shopify Admin GraphQL API (2026-10)**, **Shopify Files API**, **Shopify App Proxy**, and **Shopify Webhooks**. It validates and persists high-resolution Konva.js canvas exports into the merchant's Shopify Files CDN and attaches design references to Shopify cart items and orders without requiring external databases.
 
 ---
 
@@ -115,16 +115,17 @@ POST https://{shop}.myshopify.com/apps/product-designer/upload-design
 
 ### C. Access Scopes
 Ensure the following API scopes are granted in App Configuration:
-- `write_files` & `read_files` (Shopify Files API staging & creation)
+- `write_app_proxy` (Authorize and handle Storefront App Proxy requests)
+- `write_files` & `read_files` (Shopify Files API staging, binary upload, and file creation)
 - `read_products` (Validate product and variant existence)
-- `read_orders` & `write_orders` (Order webhook processing and order metadata)
+- `read_orders` (Order webhook processing and line item customization indexing)
 
 ### D. Webhook Configuration
 In the Partner Dashboard or via Admin API:
 - **Event topic**: `orders/create` (or `orders/paid`)
 - **Format**: `JSON`
 - **URL**: `https://<your-render-service>.onrender.com/api/webhooks/orders-create`
-- **API Version**: `2025-01`
+- **API Version**: `2026-10`
 
 ---
 
@@ -345,8 +346,8 @@ HOST=https://your-app-name.onrender.com
 SHOPIFY_API_KEY=your_client_id_here
 SHOPIFY_API_SECRET=your_client_secret_here
 SHOPIFY_APP_URL=https://your-app-name.onrender.com
-SHOPIFY_API_VERSION=2025-01
-SHOPIFY_SCOPES=write_files,read_files,read_products,read_orders,write_orders
+SHOPIFY_API_VERSION=2026-10
+SHOPIFY_SCOPES=write_app_proxy,write_files,read_files,read_products,read_orders
 
 # 32-Byte Secret for AES-256-GCM Token Storage
 SESSION_ENCRYPTION_KEY=replace_with_a_secure_32_byte_secret_key_for_production
@@ -384,7 +385,7 @@ SHOPIFY_SHOP_DOMAIN=
    - `SHOPIFY_APP_URL` (`https://<your-render-subdomain>.onrender.com`)
    - `SESSION_ENCRYPTION_KEY` (generate with `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
    - `NODE_ENV=production`
-   - `SHOPIFY_API_VERSION=2025-01`
+   - `SHOPIFY_API_VERSION=2026-10`
 4. (Optional) If deploying with multi-store support on Render without redeploy token resets, attach a **Persistent Disk** mounted at `/opt/render/project/src/.data`.
 
 ---
